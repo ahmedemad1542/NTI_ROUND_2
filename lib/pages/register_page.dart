@@ -14,25 +14,32 @@ class Register extends StatefulWidget {
 class _RegisterState extends State<Register> {
   bool isPasswordVisible = false;
   bool isConfirmPasswordVisible = false;
+  String? selectedGender; // To store the selected gender
 
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController =
-      TextEditingController();
+  final TextEditingController confirmPasswordController = TextEditingController();
 
   void validatePassword() {
     final password = passwordController.text;
     final confirmPassword = confirmPasswordController.text;
 
     // Combined regex pattern for password validation
-    const pattern =
-        r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@_])[A-Za-z\d@_]{8,}$';
+    const pattern = r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@_])[A-Za-z\d@_]{8,}$';
     final regExp = RegExp(pattern);
 
-    if (password.isEmpty) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Password cannot be empty')));
+    if (usernameController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Username cannot be empty')),
+      );
+    } else if (selectedGender == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please select your gender')),
+      );
+    } else if (password.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Password cannot be empty')),
+      );
     } else if (!regExp.hasMatch(password)) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -42,14 +49,14 @@ class _RegisterState extends State<Register> {
         ),
       );
     } else if (password != confirmPassword) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Passwords do not match')));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Passwords do not match')),
+      );
     } else {
-      // Password is valid
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Registered successfully')));
+      // Registration is valid
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Registered successfully as $selectedGender')),
+      );
     }
   }
 
@@ -72,6 +79,46 @@ class _RegisterState extends State<Register> {
                 controller: usernameController,
                 hinttext: 'Username',
                 prefixIcon: Icon(Icons.person),
+              ),
+              SizedBox(height: 10.h),
+              // Gender Dropdown
+              Container(
+                width: double.infinity,
+                padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 5.h),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Color(0xff6A707C).withOpacity(0.3)),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: DropdownButtonFormField<String>(
+                  value: selectedGender,
+                  hint: Text(
+                    'Select Gender',
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                      color: Color(0xff6A707C).withOpacity(0.6),
+                    ),
+                  ),
+                  items: ['Male', 'Female']
+                      .map((gender) => DropdownMenuItem<String>(
+                            value: gender,
+                            child: Text(
+                              gender,
+                              style: TextStyle(
+                                fontSize: 14.sp,
+                                color: Color(0xff6A707C),
+                              ),
+                            ),
+                          ))
+                      .toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      selectedGender = value;
+                    });
+                  },
+                  icon: Icon(Icons.arrow_drop_down, color: Color(0xff6A707C)),
+                  decoration: InputDecoration.collapsed(hintText: ''),
+                  borderRadius: BorderRadius.circular(10),
+                ),
               ),
               SizedBox(height: 10.h),
               CustomTextfield(

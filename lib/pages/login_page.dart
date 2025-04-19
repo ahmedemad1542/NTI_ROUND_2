@@ -13,6 +13,7 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   bool isPasswordVisible = false;
+  bool rememberMe = false; // New state for checkbox
 
   @override
   Widget build(BuildContext context) {
@@ -53,11 +54,61 @@ class _LoginState extends State<Login> {
                   color: const Color(0xff6A707C),
                 ),
               ),
-              SizedBox(height: 23.h),
+              SizedBox(height: 10.h),
+              // Remember me checkbox row
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10.w),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Transform.scale(
+                      scale: 0.9, // Slightly smaller checkbox
+                      child: Checkbox(
+                        value: rememberMe,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            rememberMe = value ?? false;
+                          });
+                        },
+                        activeColor: Color(0xff6A707C), // Matching your theme
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                      ),
+                    ),
+                    Text(
+                      'Remember me',
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        color: Color(0xff6A707C),
+                      ),
+                    ),
+                    Spacer(), // Pushes the forgot password to the right
+                    TextButton(
+                      onPressed: () {
+                        // Add forgot password functionality
+                      },
+                      child: Text(
+                        'Forgot Password?',
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          color: Color(0xff6A707C),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 13.h), // Reduced spacing
               PrimaryButtonWidget(
                 buttonText: "Login",
                 fontSize: 25.sp,
-                onPress: () {},
+                onPress: () {
+                  // Add login logic here
+                  if (rememberMe) {
+                    // Save login credentials if rememberMe is checked
+                  }
+                },
               ),
               SizedBox(height: 20.h),
               TextButton(
@@ -68,9 +119,10 @@ class _LoginState extends State<Login> {
                   );
                 },
                 child: Text(
-                  "Don’t Have An Account? Register",
+                  "Don't Have An Account? Register",
                   style: TextStyle(fontSize: 14.sp, color: Color(0xff6E6A7C)),
-                ),),
+                ),
+              ),
             ],
           ),
         ),
