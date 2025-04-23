@@ -14,6 +14,8 @@ dependencies:
 
   cupertino_icons: ^1.0.8
   flutter_screenutil: ^5.9.3
+  flutter_svg: ^2.1.0
+  flutter_native_splash: ^2.4.6
 
 dev_dependencies:
   flutter_test:
@@ -26,7 +28,9 @@ flutter:
 
   assets:
    - assets/images/1.png
-  
+   - assets/icons/Lock - Iconly Pro.svg
+   - assets/icons/Vector.png
+   - assets/images/splash.png
 
   fonts:
     - family: LexendDeca
@@ -35,3 +39,11 @@ flutter:
         - asset: assets\fonts\LexendDeca-Regular.ttf
         - asset: assets\fonts\LexendDeca-Medium.ttf
         - asset: assets\fonts\LexendDeca-Bold.ttf
+
+
+flutter_native_splash:
+  color: "#ffffff"
+  image: assets/images/splash.png
+  android: true
+  ios: true
+  fullscreen: true

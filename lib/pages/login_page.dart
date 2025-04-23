@@ -3,6 +3,7 @@ import 'package:finance_ui/core/widgets/primary_button_widget.dart';
 import 'package:finance_ui/pages/register_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -41,7 +42,8 @@ class _LoginState extends State<Login> {
               CustomTextfield(
                 hinttext: 'Password',
                 isPassword: !isPasswordVisible,
-                prefixIcon: Icon(Icons.key_rounded),
+                prefixIcon: SvgPicture.asset(
+                  'assets/icons/Lock - Iconly Pro.svg',),
                 suffixIcon: IconButton(
                   onPressed: () {
                     setState(() {

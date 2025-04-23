@@ -18,28 +18,30 @@ class _RegisterState extends State<Register> {
 
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
 
   void validatePassword() {
     final password = passwordController.text;
     final confirmPassword = confirmPasswordController.text;
 
     // Combined regex pattern for password validation
-    const pattern = r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@_])[A-Za-z\d@_]{8,}$';
+    const pattern =
+        r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@_])[A-Za-z\d@_]{8,}$';
     final regExp = RegExp(pattern);
 
     if (usernameController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Username cannot be empty')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Username cannot be empty')));
     } else if (selectedGender == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please select your gender')),
       );
     } else if (password.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Password cannot be empty')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Password cannot be empty')));
     } else if (!regExp.hasMatch(password)) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -49,9 +51,9 @@ class _RegisterState extends State<Register> {
         ),
       );
     } else if (password != confirmPassword) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Passwords do not match')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Passwords do not match')));
     } else {
       // Registration is valid
       ScaffoldMessenger.of(context).showSnackBar(
@@ -98,18 +100,21 @@ class _RegisterState extends State<Register> {
                       color: Color(0xff6A707C).withOpacity(0.6),
                     ),
                   ),
-                  items: ['Male', 'Female']
-                      .map((gender) => DropdownMenuItem<String>(
-                            value: gender,
-                            child: Text(
-                              gender,
-                              style: TextStyle(
-                                fontSize: 14.sp,
-                                color: Color(0xff6A707C),
+                  items:
+                      ['Male', 'Female']
+                          .map(
+                            (gender) => DropdownMenuItem<String>(
+                              value: gender,
+                              child: Text(
+                                gender,
+                                style: TextStyle(
+                                  fontSize: 14.sp,
+                                  color: Color(0xff6A707C),
+                                ),
                               ),
                             ),
-                          ))
-                      .toList(),
+                          )
+                          .toList(),
                   onChanged: (value) {
                     setState(() {
                       selectedGender = value;
