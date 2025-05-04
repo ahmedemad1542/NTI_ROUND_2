@@ -9,28 +9,28 @@ environment:
   sdk: ^3.7.2
 
 dependencies:
-  flutter:
-    sdk: flutter
 
   cupertino_icons: ^1.0.8
+  flutter:
+    sdk: flutter
+  flutter_bloc: ^9.1.0
+  flutter_native_splash: ^2.4.6
   flutter_screenutil: ^5.9.3
   flutter_svg: ^2.1.0
-  flutter_native_splash: ^2.4.6
+  get: ^4.7.2
+  shared_preferences: ^2.5.3
 
 dev_dependencies:
+  flutter_lints: ^5.0.0
   flutter_test:
     sdk: flutter
-
-  flutter_lints: ^5.0.0
 
 flutter:
   uses-material-design: true
 
   assets:
-   - assets/images/1.png
-   - assets/icons/Lock - Iconly Pro.svg
-   - assets/icons/Vector.png
-   - assets/images/splash.png
+    - assets/images/
+    - assets/icons/
 
   fonts:
     - family: LexendDeca
@@ -39,7 +39,6 @@ flutter:
         - asset: assets\fonts\LexendDeca-Regular.ttf
         - asset: assets\fonts\LexendDeca-Medium.ttf
         - asset: assets\fonts\LexendDeca-Bold.ttf
-
 
 flutter_native_splash:
   color: "#ffffff"
