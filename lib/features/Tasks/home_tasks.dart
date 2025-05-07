@@ -5,7 +5,7 @@ import 'package:finance_ui/core/ui/app_fonts.dart';
 import 'package:finance_ui/core/ui/app_padding.dart';
 import 'package:finance_ui/core/widgets/custom_svg.dart';
 import 'package:finance_ui/core/widgets/task_card.dart';
-import 'package:finance_ui/features/Tasks/add_tasks.dart';
+import 'package:finance_ui/features/Tasks/view/add_tasks.dart';
 import 'package:finance_ui/features/home/views/widgets/task_item_builder.dart';
 import 'package:finance_ui/features/today_tasks.dart';
 import 'package:finance_ui/features/options/profile_page.dart';
