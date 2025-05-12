@@ -1,8 +1,17 @@
+import 'dart:io';
+
+import 'package:finance_ui/core/helper/my_navigator.dart';
+import 'package:finance_ui/core/ui/app_assets.dart';
 import 'package:finance_ui/core/widgets/custom_textfield.dart';
+import 'package:finance_ui/core/widgets/image_manager/image_manager_view.dart';
 import 'package:finance_ui/core/widgets/primary_button_widget.dart';
+import 'package:finance_ui/features/auth/manager/register_cubit.dart/register_cubit.dart';
+import 'package:finance_ui/features/auth/manager/register_cubit.dart/register_state.dart';
 import 'package:finance_ui/features/valdiation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:image_picker/image_picker.dart';
 import 'login_page.dart';
 
 class Register extends StatefulWidget {
@@ -61,68 +70,127 @@ class _RegisterState extends State<Register> {
       body: Center(
         child: SingleChildScrollView(
           padding: EdgeInsets.symmetric(horizontal: 20.w),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              SizedBox(
-                width: 375.w,
-                height: 298.h,
-                child: Image.asset('assets/images/logo.png', fit: BoxFit.cover),
-              ),
-              SizedBox(height: 20.h),
-              CustomTextfield(
-                controller: usernameController,
-                hinttext: 'Username',
-              ),
-              SizedBox(height: 10.h),
-              CustomTextfield(
-                controller: passwordController,
-                hinttext: 'Password',
-                isPassword: !isPasswordVisible,
-              ),
-              SizedBox(height: 10.h),
-              CustomTextfield(
-                controller: confirmPasswordController,
-                hinttext: 'Confirm your Password',
-                isPassword: !isConfirmPasswordVisible,
-              ),
-              SizedBox(height: 23.h),
-              PrimaryButtonWidget(
-                buttonText: "Register",
-                onPress: validatePassword,
-              ),
-              SizedBox(height: 20.h),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Already Have An Account?",
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      color: Colors.black,
-                      fontWeight: FontWeight.w200,
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pushAndRemoveUntil(
+          child: SafeArea(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                BlocConsumer<RegisterCubit, RegisterState>(
+                  listener: (context, state) {
+                    if (state is RegisterErrorState) {
+                      ScaffoldMessenger.of(
                         context,
-                        MaterialPageRoute(builder: (_) => const Login()),
-                        (route) => false,
+                      ).showSnackBar(SnackBar(content: Text(state.error)));
+                    } else if (state is RegisterSuccessState) {
+                      MyNavigator.goTo(
+                        screen: () => const Login(),
+                        isReplace: true,
                       );
-                    },
-                    child: Text(
-                      "Login",
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
+                    }
+                  },
+                  builder: (context, state) {
+                    return Form(
+                      key: RegisterCubit.get(context).formKey,
+                      child: Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Column(
+                          children: [
+                            ImageManagerView(
+                              onPicked: (XFile image) {
+                                RegisterCubit.get(context).image = image;
+                              },
+                              pickedBody: (XFile image) {
+                                return Container(
+                                  width: double.infinity,
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.36,
+                                  decoration: BoxDecoration(
+                                    borderRadius: const BorderRadius.only(
+                                      bottomLeft: Radius.circular(20),
+                                      bottomRight: Radius.circular(20),
+                                    ),
+                                    image: DecorationImage(
+                                      image: FileImage(File(image.path)),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                );
+                              },
+                              unPickedBody: ClipRRect(
+                                borderRadius: const BorderRadius.only(
+                                  bottomLeft: Radius.circular(20),
+                                  bottomRight: Radius.circular(20),
+                                ),
+                                child: Image.asset(
+                                  AppAssets.logo,
+                                  width: double.infinity,
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.36,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                            CustomTextfield(
+                              controller: usernameController,
+                              hinttext: 'Username',
+                            ),
+                            SizedBox(height: 10.h),
+                            CustomTextfield(
+                              controller: passwordController,
+                              hinttext: 'Password',
+                              isPassword: !isPasswordVisible,
+                            ),
+                            SizedBox(height: 10.h),
+                            CustomTextfield(
+                              controller: confirmPasswordController,
+                              hinttext: 'Confirm your Password',
+                              isPassword: !isConfirmPasswordVisible,
+                            ),
+                            SizedBox(height: 23.h),
+                            PrimaryButtonWidget(
+                              buttonText: "Register",
+                              onPress: validatePassword,
+                            ),
+                            SizedBox(height: 20.h),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "Already Have An Account?",
+                                  style: TextStyle(
+                                    fontSize: 14.sp,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w200,
+                                  ),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pushAndRemoveUntil(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => const Login(),
+                                      ),
+                                      (route) => false,
+                                    );
+                                  },
+                                  child: Text(
+                                    "Login",
+                                    style: TextStyle(
+                                      fontSize: 14.sp,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
+                    );
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),
